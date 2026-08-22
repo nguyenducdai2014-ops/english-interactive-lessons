@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mẫu bài học tiếng Anh tương tác dành cho học sinh lớp 6." />
+    <title>English Quest | Bài học mẫu</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="English Quest trang chủ">
+          <span class="brand-mark" aria-hidden="true">E</span>
+          <span>English <strong>Quest</strong></span>
+        </a>
+        <div class="top-actions">
+          <button class="sound-button" type="button" id="sound-toggle" aria-pressed="false" title="Bật hoặc tắt âm thanh">
+            <span aria-hidden="true">♪</span><span class="sound-label">Âm thanh</span>
+          </button>
+          <button class="avatar" type="button" aria-label="Hồ sơ của em">M</button>
+        </div>
+      </header>
+
+      <section class="lesson-layout" id="top">
+        <aside class="lesson-nav" aria-label="Các phần của bài học">
+          <p class="eyebrow">HÀNH TRÌNH HÔM NAY</p>
+          <h2>Bài học mẫu</h2>
+          <div class="progress-copy"><span>Tiến độ</span><strong id="progress-text">1 / 4</strong></div>
+          <div class="progress-track" aria-label="Tiến độ 25%"><span id="progress-bar"></span></div>
+          <nav class="step-list">
+            <button class="step is-active" type="button" data-step="1"><span>1</span><b>Khởi động</b><i>✓</i></button>
+            <button class="step" type="button" data-step="2"><span>2</span><b>Từ vựng</b><i>✓</i></button>
+            <button class="step" type="button" data-step="3"><span>3</span><b>Luyện tập</b><i>✓</i></button>
+            <button class="step" type="button" data-step="4"><span>4</span><b>Thử thách</b><i>✓</i></button>
+          </nav>
+          <div class="tip-card"><span aria-hidden="true">✦</span><p>Học từng bước nhỏ để ghi nhớ thật lâu nhé!</p></div>
+        </aside>
+
+        <article class="lesson-content">
+          <div class="breadcrumb"><span>Trang chủ</span><b>/</b><span>Tiếng Anh 6</span><b>/</b><strong>Bài học mẫu</strong></div>
+          <div class="lesson-heading">
+            <div>
+              <p class="eyebrow">BÀI HỌC 01</p>
+              <h1>Chào mừng đến với<br /><em>English Quest!</em></h1>
+              <p class="intro">Đây là không gian để em khám phá, luyện tập và tự tin hơn với tiếng Anh mỗi ngày.</p>
+            </div>
+            <div class="mascot" aria-label="Minh họa chú mèo học tiếng Anh" role="img">
+              <div class="sparkle sparkle-one">✦</div><div class="sparkle sparkle-two">✦</div>
+              <div class="cat-ear ear-left"></div><div class="cat-ear ear-right"></div>
+              <div class="cat-face"><span class="eye left-eye"></span><span class="eye right-eye"></span><span class="nose"></span><span class="mouth"></span></div>
+              <div class="book">A<span>B</span><small>C</small></div>
+            </div>
+          </div>
+
+          <section class="activity-card" aria-labelledby="activity-title">
+            <div class="activity-icon" aria-hidden="true">▶</div>
+            <div class="activity-copy"><p class="eyebrow">HOẠT ĐỘNG MỞ ĐẦU</p><h2 id="activity-title">Sẵn sàng bắt đầu chưa?</h2><p>Nhấn nút bên dưới để xem cách một hoạt động tương tác sẽ xuất hiện trong bài học.</p></div>
+            <button class="primary-button" id="start-activity" type="button">Bắt đầu <span aria-hidden="true">→</span></button>
+          </section>
+
+          <section class="preview-panel" id="preview-panel" aria-live="polite">
+            <div class="preview-icon" aria-hidden="true">✓</div>
+            <div><h2>Em đã sẵn sàng!</h2><p>Nội dung bài học sẽ được thêm vào ở đây. Hãy cùng bắt đầu hành trình chinh phục tiếng Anh nhé.</p></div>
+          </section>
+
+          <section class="learning-path" aria-labelledby="path-title">
+            <div class="section-title"><div><p class="eyebrow">LỘ TRÌNH HỌC</p><h2 id="path-title">Em sẽ làm gì?</h2></div><span class="mini-badge">Khoảng 15 phút</span></div>
+            <div class="path-cards">
+              <div class="path-card coral"><span class="path-number">01</span><span class="path-icon" aria-hidden="true">☀</span><h3>Khởi động</h3><p>Làm quen với chủ đề.</p></div>
+              <div class="path-card yellow"><span class="path-number">02</span><span class="path-icon" aria-hidden="true">Aa</span><h3>Khám phá</h3><p>Học điều mới mẻ.</p></div>
+              <div class="path-card mint"><span class="path-number">03</span><span class="path-icon" aria-hidden="true">✎</span><h3>Luyện tập</h3><p>Thử sức cùng bài tập.</p></div>
+            </div>
+          </section>
+        </article>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status">Đã bật âm thanh hướng dẫn!</div>
+    <script src="script.js"></script>
+  </body>
+</html>
