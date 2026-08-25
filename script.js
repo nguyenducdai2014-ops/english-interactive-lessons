@@ -40,6 +40,17 @@ let currentQuestion = 0;
 let score = 0;
 let answered = false;
 
+// Trộn vị trí các đáp án để đáp án đúng không luôn nằm ở A.
+// Mỗi lần hiển thị một câu, thứ tự A/B/C/D sẽ được xáo trộn.
+function shuffleOptions(options) {
+  const shuffled = [...options];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function selectStep(stepNumber) {
   const safeStep = Math.min(Math.max(stepNumber, 1), totalSteps);
   const percent = Math.round((safeStep / totalSteps) * 100);
@@ -57,7 +68,9 @@ function selectStep(stepNumber) {
 
 function renderWarmUp() {
   const question = warmUpQuestions[currentQuestion];
+  const shuffledOptions = shuffleOptions(question.options);
   answered = false;
+
   activityLabel.textContent = 'KHỞI ĐỘNG • QUICK START';
   contentTitle.textContent = 'Let’s get started!';
   contentInstruction.textContent = question.prompt;
@@ -70,7 +83,7 @@ function renderWarmUp() {
       <div class="question-number">Câu ${currentQuestion + 1}</div>
       <div class="question-prompt">${question.prompt}</div>
       <div class="answer-grid">
-        ${question.options.map((option, index) => `
+        ${shuffledOptions.map((option, index) => `
           <button class="answer-option" type="button" data-answer="${option}">
             <span>${String.fromCharCode(65 + index)}</span>${option}
           </button>
