@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Mẫu bài học tiếng Anh tương tác dành cho học sinh lớp 6." />
-    <title>English Quest | Bài học mẫu</title>
+    <title>English Quest | Unit 1 - My New School</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -62,9 +62,25 @@
             <button class="primary-button" id="start-activity" type="button">Bắt đầu <span aria-hidden="true">→</span></button>
           </section>
 
-          <section class="preview-panel" id="preview-panel" aria-live="polite">
+          <section class="preview-panel show" id="preview-panel" aria-live="polite">
             <div class="preview-icon" aria-hidden="true">✓</div>
-            <div><h2>Em đã sẵn sàng!</h2><p>Nội dung bài học thật sẽ được đưa vào từng phần ở các bước tiếp theo.</p></div>
+            <div><h2>Khởi động Unit 1</h2><p>Hãy quan sát, chọn đáp án và làm quen với chủ đề <strong>My New School</strong>.</p></div>
+          </section>
+
+          <section class="lesson-activity" id="lesson-activity" aria-live="polite">
+            <div class="activity-header">
+              <div>
+                <p class="eyebrow" id="activity-label">KHỞI ĐỘNG</p>
+                <h2 id="content-title">Let's get started!</h2>
+                <p id="content-instruction">Chọn đáp án phù hợp nhất với mỗi câu hỏi.</p>
+              </div>
+              <span class="activity-badge" id="activity-badge">1 / 3</span>
+            </div>
+            <div id="activity-body"></div>
+            <div class="activity-footer">
+              <span id="activity-feedback" role="status"></span>
+              <button class="secondary-button" id="next-activity" type="button">Câu tiếp theo →</button>
+            </div>
           </section>
 
           <section class="learning-path" aria-labelledby="path-title">
