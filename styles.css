@@ -6,7 +6,7 @@
   --mint: #b9eddb;
   --line: #e7ecf3;
   --body-font: "Avenir Next", Avenir, "Segoe UI", sans-serif;
-  --display-font: "Trebuchet MS", var(--body-font);
+  --display-font: Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }
@@ -43,8 +43,8 @@ body { margin: 0; background: #f4f7fc; color: var(--ink); font-family: var(--bod
 .breadcrumb b { color: #c1c9d4; }
 .breadcrumb strong { color: #65738c; }
 .lesson-heading { align-items: center; display: flex; justify-content: space-between; min-height: 252px; }
-.lesson-heading h1 { font: 800 clamp(34px, 4vw, 51px)/.98 var(--display-font); letter-spacing: -1px; margin: 10px 0 15px; }
-.lesson-heading h1 em { color: var(--coral); font-style: normal; }
+.lesson-heading h1 { color: #233653; font: 700 clamp(35px, 4vw, 52px)/1.05 var(--display-font); letter-spacing: -0.7px; margin: 10px 0 17px; }
+.lesson-heading h1 em { color: var(--coral); font-style: normal; font-weight: 700; }
 .intro { color: #65758d; font-size: 16px; line-height: 1.5; margin: 0; max-width: 550px; }
 .mascot { height: 180px; margin-right: 38px; position: relative; width: 190px; }
 .cat-face { background: #ffbc65; border-radius: 48% 48% 45% 45%; height: 102px; position: absolute; right: 30px; top: 24px; width: 117px; z-index: 2; }
