@@ -43,7 +43,7 @@ body { margin: 0; background: #f4f7fc; color: var(--ink); font-family: var(--bod
 .breadcrumb b { color: #c1c9d4; }
 .breadcrumb strong { color: #65738c; }
 .lesson-heading { align-items: center; display: flex; justify-content: space-between; min-height: 252px; }
-.lesson-heading h1 { color: #233653; font: 700 clamp(35px, 4vw, 52px)/1.05 var(--display-font); letter-spacing: -0.7px; margin: 10px 0 17px; }
+.lesson-heading h1 { color: #233653; font: 700 clamp(35px, 4vw, 52px)/1.05 var(--display-font); letter-spacing: -1.1px; word-spacing: -1px; font-kerning: normal; margin: 10px 0 17px; }
 .lesson-heading h1 em { color: var(--coral); font-style: normal; font-weight: 700; }
 .intro { color: #65758d; font-size: 16px; line-height: 1.5; margin: 0; max-width: 550px; }
 .mascot { height: 180px; margin-right: 38px; position: relative; width: 190px; }
