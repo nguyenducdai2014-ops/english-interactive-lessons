@@ -1,24 +1,31 @@
-// English Quest: load the lesson engine safely, then the text lookup tool.
-// v5: repair duplicate const declarations in app.js before executing it.
+// English Quest — lesson loader
+// Fix: app.js had a duplicated lesson-engine block. We keep the first complete
+// block and ignore any accidental second copy before executing it.
 (async () => {
   try {
-    const response = await fetch('app.js?v=5', { cache: 'no-store' });
+    const response = await fetch('app.js?v=6', { cache: 'no-store' });
     if (!response.ok) throw new Error(`app.js HTTP ${response.status}`);
 
     let source = await response.text();
 
-    // app.js currently contains two copies of these data declarations.
-    // Converting both to var makes the declarations legal in one scope;
-    // the second copy has the same data and safely replaces the first.
-    source = source
-      .replace(/\bconst challengeMCQ\s*=/g, 'var challengeMCQ =')
-      .replace(/\bconst challengeWriting\s*=/g, 'var challengeWriting =');
+    // The current app.js contains the lesson engine twice. Both copies start
+    // with the same top-level `const steps = ...` declaration. Executing both
+    // copies causes duplicate-identifier errors and prevents the warm-up
+    // questions from rendering. Keep only the first complete copy.
+    const marker = 'const steps=';
+    const first = source.indexOf(marker);
+    const second = first >= 0 ? source.indexOf(marker, first + marker.length) : -1;
+
+    if (first >= 0 && second >= 0) {
+      source = source.slice(0, second);
+      console.info('English Quest: removed duplicated lesson-engine block.');
+    }
 
     const runLesson = new Function(source);
     runLesson();
 
     const lookupScript = document.createElement('script');
-    lookupScript.src = 'lookup.js?v=5';
+    lookupScript.src = 'lookup.js?v=6';
     lookupScript.onload = () => console.log('English Quest: lookup ready.');
     lookupScript.onerror = () => console.error('English Quest: lookup.js could not be loaded.');
     document.body.appendChild(lookupScript);
