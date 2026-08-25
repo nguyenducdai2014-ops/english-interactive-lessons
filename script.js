@@ -1,31 +1,38 @@
 // English Quest — lesson loader
-// Fix: app.js had a duplicated lesson-engine block. We keep the first complete
-// block and ignore any accidental second copy before executing it.
+// Fixes duplicated lesson-data declarations before the engine is executed.
 (async () => {
   try {
-    const response = await fetch('app.js?v=6', { cache: 'no-store' });
+    const response = await fetch('app.js?v=7', { cache: 'no-store' });
     if (!response.ok) throw new Error(`app.js HTTP ${response.status}`);
 
     let source = await response.text();
 
-    // The current app.js contains the lesson engine twice. Both copies start
-    // with the same top-level `const steps = ...` declaration. Executing both
-    // copies causes duplicate-identifier errors and prevents the warm-up
-    // questions from rendering. Keep only the first complete copy.
-    const marker = 'const steps=';
-    const first = source.indexOf(marker);
-    const second = first >= 0 ? source.indexOf(marker, first + marker.length) : -1;
+    // The current app.js accidentally contains a second copy of the
+    // challengeMCQ declaration. That duplicate const causes a SyntaxError,
+    // which stops the entire lesson engine before Warm-up can render.
+    function removeDuplicateConstArray(text, name) {
+      const marker = `const ${name}=[`;
+      const first = text.indexOf(marker);
+      if (first < 0) return text;
 
-    if (first >= 0 && second >= 0) {
-      source = source.slice(0, second);
-      console.info('English Quest: removed duplicated lesson-engine block.');
+      const second = text.indexOf(marker, first + marker.length);
+      if (second < 0) return text;
+
+      const end = text.indexOf('];', second);
+      if (end < 0) return text;
+
+      console.info(`English Quest: removed duplicated ${name} declaration.`);
+      return text.slice(0, second) + text.slice(end + 2);
     }
+
+    source = removeDuplicateConstArray(source, 'challengeMCQ');
+    source = removeDuplicateConstArray(source, 'challengeWriting');
 
     const runLesson = new Function(source);
     runLesson();
 
     const lookupScript = document.createElement('script');
-    lookupScript.src = 'lookup.js?v=6';
+    lookupScript.src = 'lookup.js?v=7';
     lookupScript.onload = () => console.log('English Quest: lookup ready.');
     lookupScript.onerror = () => console.error('English Quest: lookup.js could not be loaded.');
     document.body.appendChild(lookupScript);
