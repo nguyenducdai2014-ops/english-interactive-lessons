@@ -16,14 +16,14 @@ Không cần cài đặt package hay build trước khi xem trang.
 
 ## Xem trực tiếp bằng GitHub Pages
 
-Repository đã có workflow GitHub Actions để xuất bản `index.html`, `styles.css` và `script.js` lên GitHub Pages mỗi khi có thay đổi được đẩy lên nhánh `work`.
+Trang được xuất bản trực tiếp từ nhánh **main**, thư mục gốc **/(root)** bằng GitHub Pages.
 
-Sau khi đẩy repository lên GitHub, vào **Settings → Pages** và chọn **Source: GitHub Actions** (chỉ cần thực hiện một lần). Khi workflow **Deploy site to GitHub Pages** hoàn tất, mở đường dẫn hiển thị trong phần **Deployments** của repository hoặc trong log bước **Deploy to GitHub Pages**.
+Trong repository, vào **Settings → Pages** và chọn **Source: Deploy from a branch**, **Branch: main**, **Folder: /(root)**. Mỗi lần có commit mới trên `main`, GitHub Pages sẽ tự động tạo deployment mới.
 
-Địa chỉ thường có dạng:
+Địa chỉ trang:
 
 ```text
-https://<ten-tai-khoan-github>.github.io/<ten-repository>/
+https://nguyenducdai2014-ops.github.io/english-interactive-lessons/
 ```
 
 Nếu repository dùng domain tùy chỉnh, GitHub sẽ hiển thị URL tương ứng trong trang Pages.
