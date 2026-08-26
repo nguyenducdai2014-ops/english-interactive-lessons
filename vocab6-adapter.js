@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{if(typeof YEAR6_UNITS==='undefined'||typeof OFFICIAL_VOCAB==='undefined')return;YEAR6_UNITS.forEach(u=>{const list=OFFICIAL_VOCAB[u.id];if(list)u.vocab=list.map(([word,pos,ipa,meaning])=>[word,`${meaning}${pos?' · '+pos:''}${ipa?' · '+ipa:''}`]);});});
