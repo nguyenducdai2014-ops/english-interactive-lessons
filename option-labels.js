@@ -2,7 +2,7 @@
 (function(){
   const letters=['A','B','C','D'];
   const style=document.createElement('style');
-  style.textContent='.opts button .option-letter{display:inline-block;min-width:24px;font-weight:900;color:#3559ad}.opts button{display:flex;align-items:flex-start;gap:4px}';
+  style.textContent='.opts button .option-letter{display:inline-block;min-width:24px;font-weight:900;color:#3559ad}.opts button{display:flex;align-items:flex-start;gap:4px}.unit-head .credit{display:none!important}';
   document.head.appendChild(style);
   function label(){
     document.querySelectorAll('.opts').forEach(group=>{
