@@ -356,27 +356,44 @@ const U1_LISTENING_GAPS = [
   ['The English teacher is Mr ___.', 'Williams'],
   ['The playground is behind the main ___.', 'building']
 ];
-function u1ListeningVoice(type) {
+function u1ListeningVoice(preferredVoiceURI) {
   const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-  const british = voices.filter(v => /^en[-_]GB/i.test(v.lang));
-  const preference = type === 'adult' ? /sonia|libby|hazel|female/i : /ryan|thomas|george|male/i;
-  return british.find(v => preference.test(v.name)) || british[0] || voices.find(v => /^en/i.test(v.lang));
+  const british = voices.filter(voice => /^en[-_]GB/i.test(voice.lang));
+  return voices.find(voice => voice.voiceURI === preferredVoiceURI) || british[0] || voices.find(voice => /^en/i.test(voice.lang)) || null;
 }
-function u1SpeakListeningDialogue(onDone) {
-  if (!('speechSynthesis' in window)) return;
+function u1PopulateListeningVoices(select) {
+  if (!select || !('speechSynthesis' in window)) return;
+  const selected = select.value;
+  const voices = window.speechSynthesis.getVoices();
+  const british = voices.filter(voice => /^en[-_]GB/i.test(voice.lang));
+  const available = british.length ? british : voices.filter(voice => /^en/i.test(voice.lang));
+  select.innerHTML = '<option value="">Tự động chọn giọng UK</option>' + available.map(voice => `<option value="${u1Escape(voice.voiceURI)}">${u1Escape(voice.name)} (${u1Escape(voice.lang)})</option>`).join('');
+  if ([...select.options].some(option => option.value === selected)) select.value = selected;
+}
+const U1_LISTENING_STATE = { runId: 0 };
+function u1StopListening(status) {
+  U1_LISTENING_STATE.runId += 1;
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if (status) status.textContent = 'Đã dừng bài nghe. Nhấn “Nghe từ đầu” để phát lại.';
+}
+function u1SpeakListeningDialogue({ speed, voiceURI, onStart, onDone, onUnavailable }) {
+  if (!('speechSynthesis' in window)) { if (onUnavailable) onUnavailable(); return; }
+  const runId = ++U1_LISTENING_STATE.runId;
   window.speechSynthesis.cancel();
   let index = 0;
+  const voice = u1ListeningVoice(voiceURI);
   const playNext = () => {
+    if (runId !== U1_LISTENING_STATE.runId) return;
     if (index >= U1_LISTENING_DIALOGUE.length) { if (onDone) onDone(); return; }
     const line = U1_LISTENING_DIALOGUE[index++];
     const utterance = new SpeechSynthesisUtterance(line.text);
-    utterance.lang = 'en-GB';
-    utterance.rate = line.type === 'child' ? .93 : .87;
-    utterance.pitch = line.type === 'child' ? 1.35 : .95;
-    const voice = u1ListeningVoice(line.type);
+    utterance.lang = voice?.lang || 'en-GB';
+    utterance.rate = Number(speed) * (line.type === 'child' ? 1.04 : .96);
+    utterance.pitch = line.type === 'child' ? 1.28 : .94;
     if (voice) utterance.voice = voice;
-    utterance.onend = () => setTimeout(playNext, 260);
-    utterance.onerror = () => setTimeout(playNext, 100);
+    if (onStart) onStart(line, index, U1_LISTENING_DIALOGUE.length);
+    utterance.onend = () => { if (runId === U1_LISTENING_STATE.runId) setTimeout(playNext, 240); };
+    utterance.onerror = () => { if (runId === U1_LISTENING_STATE.runId) setTimeout(playNext, 80); };
     window.speechSynthesis.speak(utterance);
   };
   playNext();
@@ -394,28 +411,49 @@ function u1DownloadListeningHTML() {
 }
 function renderListening() {
   setHeader('BÀI NGHE • UK LISTENING','Welcome to Green Hill School','Nghe hội thoại nhiều nhân vật giọng Anh–Anh. Nhấn nghe 2 lần rồi điền từ vào chỗ trống.', '5 chỗ trống');
-  const lines = U1_LISTENING_DIALOGUE.map(line => `<div class="speaker-line"><span class="speaker-avatar ${line.type}">${line.initial}</span><div><b>${u1Escape(line.speaker)} <small>(${line.type === 'child' ? 'child voice' : 'adult voice'})</small></b><p>${u1Escape(line.text)}</p></div></div>`).join('');
-  activityBody.innerHTML = `<div class="listening-lab"><div class="listening-toolbar"><h3>Listening 1 — New school tour</h3><div class="listening-actions"><button class="listen-play" type="button" id="u1-listen-play">▶ Nghe giọng UK</button><button class="listen-script" type="button" id="u1-listen-script">Hiện / ẩn kịch bản</button><button class="listen-export" type="button" id="u1-listen-export">⇩ Tải bài HTML</button></div></div><p class="listening-status" id="u1-listen-status">Sẵn sàng nghe. Bài dùng giọng UK có sẵn trong trình duyệt; giọng trẻ em được điều chỉnh cao và nhanh hơn.</p><div class="listen-instructions"><b>Học sinh:</b> Không nhìn kịch bản khi nghe lần đầu. Sau khi làm xong, bấm kiểm tra để xem đáp án và dùng kịch bản để tự sửa.</div><div class="speaker-list" id="u1-listen-transcript" hidden>${lines}</div><div class="u1-subtitle">Complete the sentences</div>${U1_LISTENING_GAPS.map(([question], i) => `<div class="cloze-row"><label for="u1-listen-gap-${i}">${i + 1}. ${u1Escape(question)}</label><input id="u1-listen-gap-${i}" autocomplete="off" aria-label="Answer ${i + 1}"></div>`).join('')}<button class="listen-check" type="button" id="u1-listen-check">Kiểm tra đáp án</button><span class="listen-result" id="u1-listen-result" role="status"></span></div>${completion('Em đã hoàn thành bài nghe. Tải bản HTML để giao bài hoặc mở trực tiếp cho học sinh.')}`;
-  document.querySelector('#u1-listen-play').onclick = () => {
-    const status = document.querySelector('#u1-listen-status');
-    status.textContent = 'Đang phát hội thoại…';
-    u1SpeakListeningDialogue(() => { status.textContent = 'Đã phát xong. Em có thể nghe lại hoặc làm bài điền khuyết.'; });
+  const speakers = [...new Map(U1_LISTENING_DIALOGUE.map(line => [line.speaker, line])).values()];
+  const speakerList = speakers.map(line => `<span class="speaker-chip"><span class="speaker-avatar ${line.type}">${line.initial}</span><span><b>${u1Escape(line.speaker)}</b><small>${line.type === 'child' ? 'Học sinh' : 'Người lớn'}</small></span></span>`).join('');
+  const transcript = U1_LISTENING_DIALOGUE.map(line => `<div class="speaker-line"><span class="speaker-avatar ${line.type}">${line.initial}</span><div><b>${u1Escape(line.speaker)}</b><p>${u1Escape(line.text)}</p></div></div>`).join('');
+  activityBody.innerHTML = `<div class="listening-lab"><div class="listening-toolbar"><div><h3>Listening 1 — New school tour</h3><p class="listening-status" id="u1-listen-status" role="status">Sẵn sàng nghe. Giọng UK sẽ được ưu tiên; nếu không có, trình duyệt dùng giọng tiếng Anh gần nhất.</p></div><div class="listening-actions"><button class="listen-play" type="button" id="u1-listen-play">▶ Nghe từ đầu</button><button class="listen-stop" type="button" id="u1-listen-stop" disabled>■ Dừng</button><button class="listen-script" type="button" id="u1-listen-script" aria-expanded="false">Hiện kịch bản</button><button class="listen-export" type="button" id="u1-listen-export">⇩ Tải bài HTML</button></div></div><div class="listen-controls"><label>Tốc độ đọc <select id="u1-listen-speed"><option value=".75">Chậm</option><option value=".9" selected>Chuẩn</option><option value="1.05">Nhanh</option></select></label><label>Giọng đọc <select id="u1-listen-voice"><option value="">Tự động chọn giọng UK</option></select></label></div><div class="listen-instructions"><b>Học sinh:</b> Nghe trước, không mở kịch bản. Sau khi làm xong, bấm kiểm tra để tự sửa.</div><div class="speaker-roster" aria-label="Danh sách người nói"><b>Người nói:</b>${speakerList}</div><div class="speaker-list" id="u1-listen-transcript" hidden>${transcript}</div><div class="u1-subtitle">Complete the sentences</div>${U1_LISTENING_GAPS.map(([question], i) => `<div class="cloze-row"><label for="u1-listen-gap-${i}">${i + 1}. ${u1Escape(question)}</label><input id="u1-listen-gap-${i}" autocomplete="off" aria-label="Answer ${i + 1}"></div>`).join('')}<div class="listen-answer-actions"><button class="listen-check" type="button" id="u1-listen-check">Kiểm tra đáp án</button><span class="listen-result" id="u1-listen-result" role="status"></span></div></div>${completion('Em đã hoàn thành bài nghe. Tải bản HTML để giao bài hoặc mở trực tiếp cho học sinh.')}`;
+  const query = selector => activityBody.querySelector(selector);
+  const status = query('#u1-listen-status');
+  const play = query('#u1-listen-play');
+  const stop = query('#u1-listen-stop');
+  const speed = query('#u1-listen-speed');
+  const voice = query('#u1-listen-voice');
+  const transcriptElement = query('#u1-listen-transcript');
+  const scriptButton = query('#u1-listen-script');
+  const setPlaying = playing => { play.disabled = playing; stop.disabled = !playing; };
+  const populateVoices = () => u1PopulateListeningVoices(voice);
+  populateVoices();
+  if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = populateVoices;
+  play.onclick = () => {
+    setPlaying(true);
+    u1SpeakListeningDialogue({
+      speed: speed.value,
+      voiceURI: voice.value,
+      onStart: (line, current, total) => { status.textContent = `Đang phát ${current}/${total}: ${line.speaker}.`; },
+      onDone: () => { setPlaying(false); status.textContent = 'Đã phát xong. Em có thể nghe lại hoặc làm bài điền khuyết.'; },
+      onUnavailable: () => { setPlaying(false); status.textContent = 'Trình duyệt này không hỗ trợ đọc văn bản. Hãy mở bằng Chrome hoặc Cốc Cốc hiện đại.'; }
+    });
   };
-  document.querySelector('#u1-listen-script').onclick = () => { const script = document.querySelector('#u1-listen-transcript'); script.hidden = !script.hidden; };
-  document.querySelector('#u1-listen-export').onclick = u1DownloadListeningHTML;
-  document.querySelector('#u1-listen-check').onclick = () => {
+  stop.onclick = () => { u1StopListening(status); setPlaying(false); };
+  scriptButton.onclick = () => { transcriptElement.hidden = !transcriptElement.hidden; scriptButton.setAttribute('aria-expanded', String(!transcriptElement.hidden)); scriptButton.textContent = transcriptElement.hidden ? 'Hiện kịch bản' : 'Ẩn kịch bản'; };
+  query('#u1-listen-export').onclick = u1DownloadListeningHTML;
+  query('#u1-listen-check').onclick = () => {
     let score = 0;
     U1_LISTENING_GAPS.forEach(([, answer], i) => {
-      const input = document.querySelector(`#u1-listen-gap-${i}`);
+      const input = query(`#u1-listen-gap-${i}`);
       const good = u1Norm(input.value) === u1Norm(answer);
       input.classList.remove('good', 'bad'); input.classList.add(good ? 'good' : 'bad'); if (good) score++;
     });
-    const result = document.querySelector('#u1-listen-result');
+    const result = query('#u1-listen-result');
     result.className = `listen-result ${score === U1_LISTENING_GAPS.length ? 'feedback-good' : 'feedback-bad'}`;
-    result.textContent = score === U1_LISTENING_GAPS.length ? `✓ ${score}/${U1_LISTENING_GAPS.length} — Excellent listening!` : `${score}/${U1_LISTENING_GAPS.length}. Đáp án đúng: ${U1_LISTENING_GAPS.map(([, answer]) => answer).join(', ')}.`;
+    result.textContent = score === U1_LISTENING_GAPS.length ? `✓ ${score}/${U1_LISTENING_GAPS.length} — Excellent listening!` : `${score}/${U1_LISTENING_GAPS.length}. Hãy nghe lại và sửa những ô màu đỏ.`;
   };
   nextActivity.textContent = 'Sang Đọc hiểu →';
 }
+
 /* ===== END UNIT 1 LISTENING LAB ===== */
 
 const _u1OriginalRenderStep = renderStep;
