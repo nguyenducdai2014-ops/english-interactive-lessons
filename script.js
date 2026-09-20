@@ -11,6 +11,7 @@
 
     const lookupScript = document.createElement('script');
     lookupScript.src = 'lookup.js?v=13';
+    lookupScript.onload = () => console.log('Interactive English: lookup ready.');
     lookupScript.onerror = () => console.warn('Interactive English: lookup.js could not be loaded.');
     document.body.appendChild(lookupScript);
   } catch (error) {
