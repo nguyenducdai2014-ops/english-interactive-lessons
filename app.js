@@ -370,10 +370,21 @@ function u1PopulateListeningVoices(select) {
   select.innerHTML = '<option value="">Tự động chọn giọng UK</option>' + available.map(voice => `<option value="${u1Escape(voice.voiceURI)}">${u1Escape(voice.name)} (${u1Escape(voice.lang)})</option>`).join('');
   if ([...select.options].some(option => option.value === selected)) select.value = selected;
 }
-const U1_LISTENING_STATE = { runId: 0 };
+const U1_LISTENING_STATE = { runId: 0, activeAudio: null };
+const U1_GOOGLE_TTS_VOICES = [
+  ['en-GB-Chirp3-HD-Aoede', 'Aoede — UK'],
+  ['en-GB-Chirp3-HD-Charon', 'Charon — UK'],
+  ['en-GB-Chirp3-HD-Kore', 'Kore — UK'],
+  ['en-GB-Chirp3-HD-Puck', 'Puck — UK']
+];
 function u1StopListening(status) {
   U1_LISTENING_STATE.runId += 1;
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if (U1_LISTENING_STATE.activeAudio) {
+    U1_LISTENING_STATE.activeAudio.pause();
+    U1_LISTENING_STATE.activeAudio.src = '';
+    U1_LISTENING_STATE.activeAudio = null;
+  }
   if (status) status.textContent = 'Đã dừng bài nghe. Nhấn “Nghe từ đầu” để phát lại.';
 }
 function u1SpeakListeningDialogue({ speed, voiceURI, onStart, onDone, onUnavailable }) {
@@ -409,33 +420,87 @@ function u1DownloadListeningHTML() {
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 0);
 }
+async function u1SpeakGoogleDialogue({ apiKey, speed, voiceName, onStart, onDone, onFallback }) {
+  if (!apiKey) { if (onFallback) onFallback('Nhập Google Cloud API key để dùng Google TTS.'); return; }
+  u1StopListening();
+  const runId = ++U1_LISTENING_STATE.runId;
+  const playNext = async index => {
+    if (runId !== U1_LISTENING_STATE.runId) return;
+    if (index >= U1_LISTENING_DIALOGUE.length) { U1_LISTENING_STATE.activeAudio = null; if (onDone) onDone(); return; }
+    const line = U1_LISTENING_DIALOGUE[index];
+    try {
+      const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          input: { text: line.text },
+          voice: { languageCode: 'en-GB', name: voiceName || U1_GOOGLE_TTS_VOICES[0][0] },
+          audioConfig: { audioEncoding: 'MP3', speakingRate: Number(speed) * (line.type === 'child' ? 1.04 : .96), pitch: line.type === 'child' ? 3 : -1 }
+        })
+      });
+      if (!response.ok) throw new Error(`Google TTS HTTP ${response.status}`);
+      const payload = await response.json();
+      if (!payload.audioContent) throw new Error('Google TTS did not return audio');
+      if (runId !== U1_LISTENING_STATE.runId) return;
+      const audio = new Audio(`data:audio/mp3;base64,${payload.audioContent}`);
+      U1_LISTENING_STATE.activeAudio = audio;
+      if (onStart) onStart(line, index + 1, U1_LISTENING_DIALOGUE.length);
+      audio.onended = () => { if (runId === U1_LISTENING_STATE.runId) playNext(index + 1); };
+      audio.onerror = () => { if (runId === U1_LISTENING_STATE.runId && onFallback) onFallback('Không thể phát audio từ Google TTS.'); };
+      await audio.play();
+    } catch (error) {
+      if (runId === U1_LISTENING_STATE.runId && onFallback) onFallback('Google TTS không khả dụng; đã chuyển sang giọng trình duyệt.');
+    }
+  };
+  playNext(0);
+}
+function u1PopulateGoogleVoices(select) {
+  const selected = select.value;
+  select.innerHTML = U1_GOOGLE_TTS_VOICES.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+  if ([...select.options].some(option => option.value === selected)) select.value = selected;
+}
+function u1SetListeningProvider(provider, voice, keyField) {
+  const google = provider.value === 'google';
+  keyField.hidden = !google;
+  if (google) u1PopulateGoogleVoices(voice); else u1PopulateListeningVoices(voice);
+}
+
 function renderListening() {
   setHeader('BÀI NGHE • UK LISTENING','Welcome to Green Hill School','Nghe hội thoại nhiều nhân vật giọng Anh–Anh. Nhấn nghe 2 lần rồi điền từ vào chỗ trống.', '5 chỗ trống');
   const speakers = [...new Map(U1_LISTENING_DIALOGUE.map(line => [line.speaker, line])).values()];
   const speakerList = speakers.map(line => `<span class="speaker-chip"><span class="speaker-avatar ${line.type}">${line.initial}</span><span><b>${u1Escape(line.speaker)}</b><small>${line.type === 'child' ? 'Học sinh' : 'Người lớn'}</small></span></span>`).join('');
   const transcript = U1_LISTENING_DIALOGUE.map(line => `<div class="speaker-line"><span class="speaker-avatar ${line.type}">${line.initial}</span><div><b>${u1Escape(line.speaker)}</b><p>${u1Escape(line.text)}</p></div></div>`).join('');
-  activityBody.innerHTML = `<div class="listening-lab"><div class="listening-toolbar"><div><h3>Listening 1 — New school tour</h3><p class="listening-status" id="u1-listen-status" role="status">Sẵn sàng nghe. Giọng UK sẽ được ưu tiên; nếu không có, trình duyệt dùng giọng tiếng Anh gần nhất.</p></div><div class="listening-actions"><button class="listen-play" type="button" id="u1-listen-play">▶ Nghe từ đầu</button><button class="listen-stop" type="button" id="u1-listen-stop" disabled>■ Dừng</button><button class="listen-script" type="button" id="u1-listen-script" aria-expanded="false">Hiện kịch bản</button><button class="listen-export" type="button" id="u1-listen-export">⇩ Tải bài HTML</button></div></div><div class="listen-controls"><label>Tốc độ đọc <select id="u1-listen-speed"><option value=".75">Chậm</option><option value=".9" selected>Chuẩn</option><option value="1.05">Nhanh</option></select></label><label>Giọng đọc <select id="u1-listen-voice"><option value="">Tự động chọn giọng UK</option></select></label></div><div class="listen-instructions"><b>Học sinh:</b> Nghe trước, không mở kịch bản. Sau khi làm xong, bấm kiểm tra để tự sửa.</div><div class="speaker-roster" aria-label="Danh sách người nói"><b>Người nói:</b>${speakerList}</div><div class="speaker-list" id="u1-listen-transcript" hidden>${transcript}</div><div class="u1-subtitle">Complete the sentences</div>${U1_LISTENING_GAPS.map(([question], i) => `<div class="cloze-row"><label for="u1-listen-gap-${i}">${i + 1}. ${u1Escape(question)}</label><input id="u1-listen-gap-${i}" autocomplete="off" aria-label="Answer ${i + 1}"></div>`).join('')}<div class="listen-answer-actions"><button class="listen-check" type="button" id="u1-listen-check">Kiểm tra đáp án</button><span class="listen-result" id="u1-listen-result" role="status"></span></div></div>${completion('Em đã hoàn thành bài nghe. Tải bản HTML để giao bài hoặc mở trực tiếp cho học sinh.')}`;
+  activityBody.innerHTML = `<div class="listening-lab"><div class="listening-toolbar"><div><h3>Listening 1 — New school tour</h3><p class="listening-status" id="u1-listen-status" role="status">Sẵn sàng nghe. Giọng UK sẽ được ưu tiên; nếu không có, trình duyệt dùng giọng tiếng Anh gần nhất.</p></div><div class="listening-actions"><button class="listen-play" type="button" id="u1-listen-play">▶ Nghe từ đầu</button><button class="listen-stop" type="button" id="u1-listen-stop" disabled>■ Dừng</button><button class="listen-script" type="button" id="u1-listen-script" aria-expanded="false">Hiện kịch bản</button><button class="listen-export" type="button" id="u1-listen-export">⇩ Tải bài HTML</button></div></div><div class="listen-controls"><label>Nguồn đọc <select id="u1-listen-provider"><option value="browser">Giọng trình duyệt</option><option value="google">Google Cloud TTS</option></select></label><label>Tốc độ đọc <select id="u1-listen-speed"><option value=".75">Chậm</option><option value=".9" selected>Chuẩn</option><option value="1.05">Nhanh</option></select></label><label>Giọng đọc <select id="u1-listen-voice"><option value="">Tự động chọn giọng UK</option></select></label><label class="google-key-field" id="u1-google-key-field" hidden>Google API key <input id="u1-google-key" type="password" autocomplete="off" placeholder="API key (không lưu)"></label></div><div class="listen-instructions"><b>Học sinh:</b> Nghe trước, không mở kịch bản. Sau khi làm xong, bấm kiểm tra để tự sửa.</div><div class="speaker-roster" aria-label="Danh sách người nói"><b>Người nói:</b>${speakerList}</div><div class="speaker-list" id="u1-listen-transcript" hidden>${transcript}</div><div class="u1-subtitle">Complete the sentences</div>${U1_LISTENING_GAPS.map(([question], i) => `<div class="cloze-row"><label for="u1-listen-gap-${i}">${i + 1}. ${u1Escape(question)}</label><input id="u1-listen-gap-${i}" autocomplete="off" aria-label="Answer ${i + 1}"></div>`).join('')}<div class="listen-answer-actions"><button class="listen-check" type="button" id="u1-listen-check">Kiểm tra đáp án</button><span class="listen-result" id="u1-listen-result" role="status"></span></div></div>${completion('Em đã hoàn thành bài nghe. Tải bản HTML để giao bài hoặc mở trực tiếp cho học sinh.')}`;
   const query = selector => activityBody.querySelector(selector);
   const status = query('#u1-listen-status');
   const play = query('#u1-listen-play');
   const stop = query('#u1-listen-stop');
   const speed = query('#u1-listen-speed');
   const voice = query('#u1-listen-voice');
+  const provider = query('#u1-listen-provider');
+  const googleKey = query('#u1-google-key');
+  const googleKeyField = query('#u1-google-key-field');
   const transcriptElement = query('#u1-listen-transcript');
   const scriptButton = query('#u1-listen-script');
   const setPlaying = playing => { play.disabled = playing; stop.disabled = !playing; };
   const populateVoices = () => u1PopulateListeningVoices(voice);
   populateVoices();
-  if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = populateVoices;
+  if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => { if (provider.value === 'browser') populateVoices(); };
+  provider.onchange = () => u1SetListeningProvider(provider, voice, googleKeyField);
   play.onclick = () => {
     setPlaying(true);
-    u1SpeakListeningDialogue({
-      speed: speed.value,
-      voiceURI: voice.value,
+    const callbacks = {
       onStart: (line, current, total) => { status.textContent = `Đang phát ${current}/${total}: ${line.speaker}.`; },
-      onDone: () => { setPlaying(false); status.textContent = 'Đã phát xong. Em có thể nghe lại hoặc làm bài điền khuyết.'; },
-      onUnavailable: () => { setPlaying(false); status.textContent = 'Trình duyệt này không hỗ trợ đọc văn bản. Hãy mở bằng Chrome hoặc Cốc Cốc hiện đại.'; }
-    });
+      onDone: () => { setPlaying(false); status.textContent = 'Đã phát xong. Em có thể nghe lại hoặc làm bài điền khuyết.'; }
+    };
+    if (provider.value === 'google') {
+      u1SpeakGoogleDialogue({
+        apiKey: googleKey.value.trim(), speed: speed.value, voiceName: voice.value, ...callbacks,
+        onFallback: message => { status.textContent = message; u1SpeakListeningDialogue({ speed: speed.value, voiceURI: '', ...callbacks, onUnavailable: () => { setPlaying(false); status.textContent = message; } }); }
+      });
+    } else {
+      u1SpeakListeningDialogue({ speed: speed.value, voiceURI: voice.value, ...callbacks, onUnavailable: () => { setPlaying(false); status.textContent = 'Trình duyệt này không hỗ trợ đọc văn bản. Hãy mở bằng Chrome hoặc Cốc Cốc hiện đại.'; } });
+    }
   };
   stop.onclick = () => { u1StopListening(status); setPlaying(false); };
   scriptButton.onclick = () => { transcriptElement.hidden = !transcriptElement.hidden; scriptButton.setAttribute('aria-expanded', String(!transcriptElement.hidden)); scriptButton.textContent = transcriptElement.hidden ? 'Hiện kịch bản' : 'Ẩn kịch bản'; };

@@ -120,3 +120,5 @@ body { margin: 0; background: #f4f7fc; color: var(--ink); font-family: var(--bod
 .speaker-roster > b { color: #43536d; font-size: 13px; }.speaker-chip { align-items: center; background: #fff; border: 1px solid #e0e8f2; border-radius: 20px; display: inline-flex; gap: 6px; padding: 5px 10px 5px 5px; }.speaker-chip .speaker-avatar { flex: 0 0 26px; height: 26px; width: 26px; }.speaker-chip b,.speaker-chip small { display: block; line-height: 1.15; }.speaker-chip b { color: #354963; font-size: 12px; }.speaker-chip small { color: #718098; font-size: 10px; }
 .listen-answer-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
 @media (max-width: 520px) { .listening-actions { width: 100%; }.listening-actions button { flex: 1 1 135px; }.listen-controls { align-items: stretch; flex-direction: column; }.listen-controls label { justify-content: space-between; }.listen-controls select { max-width: 70%; } }
+.google-key-field input { background:#fff; border:1px solid #cbd9ed; border-radius:8px; font:600 13px var(--body-font); max-width:250px; padding:8px; }
+@media (max-width:520px) { .google-key-field input { max-width:70%; } }
