@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SMART REVIEW – TIẾNG ANH 7 – UNIT 1–2–3</title>
+<style>
+:root{--bg:#eef7ff;--card:#fff;--ink:#17324d;--muted:#61748a;--blue:#1976d2;--blue2:#e6f2ff;--gold:#d39a18;--green:#1d8a55;--red:#d94b4b;--line:#d9e6f2;--shadow:0 10px 28px rgba(30,75,110,.10)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#dff1ff 0,#f7fbff 35%,#eef7ff 100%);font-family:Arial,Helvetica,sans-serif;color:var(--ink);line-height:1.55}
+header{padding:28px 18px 20px;text-align:center;background:linear-gradient(135deg,#1683d8,#55b7ee);color:#fff;box-shadow:var(--shadow)}
+.brand{font-size:13px;letter-spacing:1.6px;font-weight:700;opacity:.95}.title{font-size:clamp(28px,5vw,46px);font-weight:900;margin:4px 0;text-shadow:2px 3px 0 rgba(0,0,0,.14)}.subtitle{font-size:15px;opacity:.98}
+.designer{margin-top:12px;display:inline-block;padding:5px 14px;border:2px solid #f7d46d;border-radius:30px;color:#fff3b4;font-weight:800;text-shadow:1px 2px 0 rgba(100,60,0,.3)}
+nav{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:7px;overflow:auto;padding:8px}.tab{border:0;background:#edf5fc;color:var(--ink);padding:10px 14px;border-radius:18px;white-space:nowrap;font-weight:700;cursor:pointer}.tab.active{background:var(--blue);color:#fff}
+main{max-width:1100px;margin:auto;padding:18px}.panel{display:none}.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}h2{margin-top:0;color:#135e9d}h3{color:#176cae}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.badge{display:inline-block;padding:4px 9px;border-radius:12px;background:var(--blue2);color:#145c94;font-size:12px;font-weight:800;margin:2px}.unitbox{border-left:6px solid var(--blue);padding-left:12px}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--line);padding:9px;vertical-align:top}th{background:#edf6ff}
+.qt{position:sticky;top:52px;z-index:9;background:#fffdf3;border:1px solid #f0d98a;border-radius:16px;padding:10px;margin:10px 0;box-shadow:var(--shadow);display:flex;gap:7px;align-items:center;flex-wrap:wrap}.qt button{border:0;border-radius:12px;padding:8px 11px;background:#fff0b8;font-weight:800;cursor:pointer}.qt button:hover{filter:brightness(.97)}#qtResult{font-weight:700;color:#765700;flex:1;min-width:220px}
+.q{padding:13px;border:1px solid var(--line);border-radius:14px;margin:10px 0;background:#fbfdff}.q.correct{border-color:#83c9a7;background:#ecfff5}.q.wrong{border-color:#efa1a1;background:#fff1f1}
+.opts label{display:block;padding:6px 8px;border-radius:9px;margin:3px 0;cursor:pointer}.opts label:hover{background:#f0f7ff}
+button.action{background:var(--blue);color:#fff;border:0;border-radius:12px;padding:10px 15px;font-weight:800;cursor:pointer;margin:6px 4px 6px 0}.secondary{background:#edf5fc!important;color:var(--ink)!important}
+.feedback{font-weight:800;margin-top:6px}.scorebox{font-size:20px;font-weight:900;padding:14px;background:#eefaf4;border-radius:14px;border:1px solid #bfe4cf}
+details{background:#f8fbfe;border:1px solid var(--line);border-radius:13px;padding:10px;margin:10px 0}summary{cursor:pointer;font-weight:800;color:#145f99}
+textarea{width:100%;min-height:150px;border:1px solid #bcd0e0;border-radius:12px;padding:12px;font:inherit}.frame{background:#fff8dc;border-left:5px solid #e2ad27;padding:12px;border-radius:10px}
+.small{font-size:13px;color:var(--muted)}.ipa{font-family:"Times New Roman",serif;color:#7b4f99}.model{display:none}.unit-title{font-size:25px;font-weight:900;margin-bottom:4px}.tip{background:#f0f8ff;border-radius:12px;padding:10px}
+footer{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+@media(max-width:700px){main{padding:10px}.card{padding:14px}.qt{top:51px}.title{font-size:30px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SMART REVIEW · GLOBAL SUCCESS</div>
+  <div class="title">ÔN TẬP UNIT 1 – 2 – 3</div>
+  <div class="subtitle">TIẾNG ANH 7 · HỌC KÌ I · Hobbies – Healthy Living – Community Service</div>
+  <div class="designer">Designed by Nguyễn Đức Đại</div>
+</header>
+
+<nav id="tabs">
+<button class="tab active" data-tab="overview">Tổng quan</button>
+<button class="tab" data-tab="theory">Lý thuyết</button>
+<button class="tab" data-tab="vocab">Vocabulary</button>
+<button class="tab" data-tab="pron">Pronunciation</button>
+<button class="tab" data-tab="practice">Practice</button>
+<button class="tab" data-tab="reading">Reading</button>
+<button class="tab" data-tab="writing">Writing + Speaking</button>
+<button class="tab" data-tab="result">Kết quả</button>
+</nav>
+
+<main>
+<div class="qt">
+  <b>🔎 Quick Translate:</b>
+  <button onclick="translateSel('word')">Từ</button>
+  <button onclick="translateSel('phrase')">Cụm từ</button>
+  <button onclick="translateSel('sentence')">Câu</button>
+  <button onclick="translateSel('paragraph')">Đoạn</button>
+  <button onclick="speakSelection()">🔊 Audio UK</button>
+  <label class="small"><input id="autoSpeak" type="checkbox"> Tự phát từ</label>
+  <span id="qtResult">Bôi đen tiếng Anh → tự động dịch sang tiếng Việt → 🔊 nghe English (UK).</span>
+</div>
+
+<section class="panel active" id="overview">
+<div class="card">
+<h2>🎯 Mục tiêu ôn tập</h2>
+<div class="grid">
+<div class="unitbox"><div class="unit-title">Unit 1 – Hobbies</div><p>Hobbies; verbs of liking/disliking + V-ing; Present Simple; adverbs of frequency; /ə/ và /ɜː/.</p></div>
+<div class="unitbox"><div class="unit-title">Unit 2 – Healthy Living</div><p>Healthy living; simple sentences; S/V/O/Adv; should/shouldn’t; /f/ và /v/.</p></div>
+<div class="unitbox"><div class="unit-title">Unit 3 – Community Service</div><p>Community service; Past Simple; was/were; did/didn’t; regular/irregular verbs; -ed /t/, /d/, /ɪd/.</p></div>
+</div>
+<div class="tip"><b>Con đường học:</b> Ôn lý thuyết → Vocabulary → Pronunciation → Practice → Reading → Writing/Speaking → xem kết quả.</div>
+</div>
+<div class="card">
+<h2>📌 Phạm vi</h2>
+<ul>
+<li>Unit 1: Present Simple, verbs of liking/disliking + V-ing, adverbs of frequency.</li>
+<li>Unit 2: Simple sentences, thành phần S/V/O/Adv, should/shouldn’t.</li>
+<li>Unit 3: Past Simple, was/were, did/didn’t, regular & irregular verbs.</li>
+<li>Không đưa kiến thức ngoài phạm vi Unit 1–3 vào phần chấm điểm chính.</li>
+</ul>
+</div>
+</section>
+
+<section class="panel" id="theory">
+<div class="card"><h2>📘 Unit 1 – Hobbies</h2>
+<table><tr><th>Điểm cần nhớ</th><th>Cấu trúc</th><th>Ví dụ</th></tr>
+<tr><td>Like / love / enjoy / hate / not like</td><td>S + verb + V-ing</td><td>I enjoy <b>reading</b> books.</td></tr>
+<tr><td>Present Simple</td><td>S + V/V-s(es)</td><td>She <b>collects</b> stamps.</td></tr>
+<tr><td>Phủ định</td><td>S + do/does not + V</td><td>He <b>doesn't play</b> judo.</td></tr>
+<tr><td>Câu hỏi</td><td>Do/Does + S + V...?</td><td>Does she <b>go</b> camping?</td></tr>
+<tr><td>To be</td><td>am/is/are</td><td>My hobby <b>is</b> painting.</td></tr>
+<tr><td>Tần suất</td><td>always, usually, often, sometimes, rarely, never</td><td>I <b>often</b> read books.</td></tr>
+</table>
+<p class="tip"><b>Lỗi hay gặp:</b> Sau do/does dùng động từ nguyên thể; he/she/it cần -s/-es trong câu khẳng định; không dùng am/is/are với động từ thường.</p>
+</div>
+<div class="card"><h2>📗 Unit 2 – Healthy Living</h2>
+<table><tr><th>Thành phần</th><th>Vai trò</th><th>Ví dụ</th></tr>
+<tr><td>S</td><td>Subject – chủ ngữ</td><td><b>Mai</b> exercises every day.</td></tr>
+<tr><td>V</td><td>Verb – động từ</td><td>Mai <b>exercises</b> every day.</td></tr>
+<tr><td>O</td><td>Object – tân ngữ</td><td>She drinks <b>water</b>.</td></tr>
+<tr><td>Adv</td><td>Adverbial – trạng ngữ</td><td>She exercises <b>every morning</b>.</td></tr>
+</table>
+<p><b>Advice:</b> should + V; shouldn't + V. → You should get enough sleep. / You shouldn't eat too much fast food.</p>
+</div>
+<div class="card"><h2>📕 Unit 3 – Community Service</h2>
+<table><tr><th>Điểm cần nhớ</th><th>Cấu trúc</th><th>Ví dụ</th></tr>
+<tr><td>Khẳng định</td><td>S + V-ed / irregular V2</td><td>We <b>donated</b> books. / We <b>gave</b> food.</td></tr>
+<tr><td>Phủ định</td><td>S + didn't + V</td><td>We <b>didn't donate</b> money.</td></tr>
+<tr><td>Câu hỏi</td><td>Did + S + V...?</td><td><b>Did</b> you <b>join</b> the project?</td></tr>
+<tr><td>To be</td><td>was / were</td><td>She <b>was</b> proud. They <b>were</b> helpful.</td></tr>
+<tr><td>Time expressions</td><td>yesterday, last week, ... ago</td><td>We helped them <b>last Sunday</b>.</td></tr>
+</table>
+<p class="tip"><b>Nhớ:</b> Sau did/didn't dùng V nguyên thể. Không dùng V-ed sau didn't.</p>
+</div>
+</section>
+
+<section class="panel" id="vocab">
+<div class="card"><h2>🧠 Vocabulary theo chủ đề</h2>
+<div class="grid">
+<div><h3>Unit 1 – Hobbies</h3>
+<p><span class="badge">building dollhouses</span><span class="badge">camping</span><span class="badge">collecting coins</span><span class="badge">collecting stamps</span><span class="badge">cooking</span><span class="badge">drawing</span><span class="badge">gardening</span><span class="badge">horse riding</span><span class="badge">jogging</span><span class="badge">making models</span><span class="badge">painting</span><span class="badge">reading books</span><span class="badge">swimming</span><span class="badge">yoga</span></p></div>
+<div><h3>Unit 2 – Healthy Living</h3>
+<p><span class="badge">cycling</span><span class="badge">exercise</span><span class="badge">outdoor activity</span><span class="badge">acne</span><span class="badge">flu</span><span class="badge">sunburn</span><span class="badge">tired eyes</span><span class="badge">eyedrops</span><span class="badge">lip balm</span><span class="badge">mask</span><span class="badge">soap</span><span class="badge">suncream</span><span class="badge">get enough sleep</span><span class="badge">wash your hands</span></p></div>
+<div><h3>Unit 3 – Community Service</h3>
+<p><span class="badge">donate</span><span class="badge">exchange</span><span class="badge">feed</span><span class="badge">look after</span><span class="badge">pick up</span><span class="badge">plant</span><span class="badge">protect</span><span class="badge">recycle</span><span class="badge">reuse</span><span class="badge">set up</span><span class="badge">tutor</span><span class="badge">volunteer</span><span class="badge">nursing home</span><span class="badge">orphanage</span></p></div>
+</div>
+<p class="small">Mẹo: Bôi đen <b>từ → cụm từ → câu → đoạn văn</b> trên trang: hệ thống tự động dịch sang tiếng Việt; nút 🔊 đọc <b>đúng nguyên văn phần tiếng Anh đã chọn</b> bằng English (UK), tốc độ 0.90x.</p>
+</div>
+<div class="card">
+<h2>🔤 Từ vựng trọng tâm + IPA</h2>
+<table>
+<tr><th>English</th><th>IPA (UK)</th><th>Từ loại</th><th>Nghĩa</th></tr>
+<tr><td>hobby</td><td class="ipa">/ˈhɒbi/</td><td>n</td><td>sở thích</td></tr>
+<tr><td>collect</td><td class="ipa">/kəˈlekt/</td><td>v</td><td>sưu tầm</td></tr>
+<tr><td>gardening</td><td class="ipa">/ˈɡɑːdənɪŋ/</td><td>n</td><td>việc làm vườn</td></tr>
+<tr><td>creative</td><td class="ipa">/kriˈeɪtɪv/</td><td>adj</td><td>sáng tạo</td></tr>
+<tr><td>healthy</td><td class="ipa">/ˈhelθi/</td><td>adj</td><td>khỏe mạnh</td></tr>
+<tr><td>exercise</td><td class="ipa">/ˈeksəsaɪz/</td><td>n/v</td><td>tập thể dục</td></tr>
+<tr><td>sunburn</td><td class="ipa">/ˈsʌnbɜːn/</td><td>n</td><td>cháy nắng</td></tr>
+<tr><td>avoid</td><td class="ipa">/əˈvɔɪd/</td><td>v</td><td>tránh</td></tr>
+<tr><td>donate</td><td class="ipa">/dəʊˈneɪt/</td><td>v</td><td>quyên góp</td></tr>
+<tr><td>volunteer</td><td class="ipa">/ˌvɒlənˈtɪə/</td><td>v/n</td><td>tình nguyện; người tình nguyện</td></tr>
+<tr><td>orphanage</td><td class="ipa">/ˈɔːfənɪdʒ/</td><td>n</td><td>trại trẻ mồ côi</td></tr>
+<tr><td>community service</td><td class="ipa">/kəˈmjuːnəti ˈsɜːvɪs/</td><td>n.phr</td><td>hoạt động phục vụ cộng đồng</td></tr>
+</table>
+</div>
+</section>
+
+<section class="panel" id="pron">
+<div class="card"><h2>🔊 Pronunciation</h2>
+<h3>Unit 1: /ə/ và /ɜː/</h3>
+<p><b>/ə/</b> là âm yếu, thường gặp trong âm tiết không nhấn. <b>/ɜː/</b> là nguyên âm dài như trong <i>bird</i>, <i>work</i>.</p>
+<p class="ipa">about /əˈbaʊt/ · teacher /ˈtiːtʃə/ · bird /bɜːd/ · work /wɜːk/</p>
+<h3>Unit 2: /f/ và /v/</h3>
+<p class="ipa">food /fuːd/ · safe /seɪf/ · very /ˈveri/ · have /hæv/</p>
+<h3>Unit 3: -ed</h3>
+<table><tr><th>/t/</th><th>/d/</th><th>/ɪd/</th></tr>
+<tr><td>helped</td><td>cleaned</td><td>needed</td></tr><tr><td>washed</td><td>played</td><td>visited</td></tr></table>
+</div>
+<div class="card"><h2>🎧 Mini practice</h2>
+<p>Đọc to các cặp sau, chú ý âm cuối:</p>
+<ul><li>safe – save</li><li>fan – van</li><li>leaf – leave</li><li>helped – cleaned – needed</li></ul>
+<p class="small">Có thể bôi đen từng từ và nhấn 🔊 Audio UK ở thanh Quick Translate.</p>
+</div>
+</section>
+
+<section class="panel" id="practice">
+<div class="card">
+<h2>✏️ Practice – 30 câu</h2>
+<p class="small">Chọn đáp án. Đáp án chỉ xuất hiện sau khi bạn bấm “Nộp bài”.</p>
+<form id="quiz"></form>
+<button class="action" onclick="gradeQuiz()">Nộp bài</button>
+<button class="action secondary" onclick="resetQuiz()">Làm lại</button>
+<div id="quizScore" class="scorebox" style="display:none"></div>
+</div>
+</section>
+
+<section class="panel" id="reading">
+<div class="card">
+<h2>📖 Reading 1 – Hobbies</h2>
+<p><b>Read the text and choose the best answer.</b></p>
+<p>Mai has several hobbies, but reading books is her favourite. She usually reads in the evening after she finishes her homework. At weekends, she sometimes goes camping with her family. Her brother likes collecting coins, while her sister enjoys drawing. Mai thinks hobbies are useful because they help people relax, learn new skills and spend time with others.</p>
+<div id="read1"></div>
+</div>
+<div class="card">
+<h2>📖 Reading 2 – Community Service</h2>
+<p>Last Saturday, Nam and his classmates joined a community-service project. In the morning, they cleaned a playground and picked up rubbish. Then they planted flowers near the library. In the afternoon, some students gave old books to children in a rural area. Nam was tired at the end of the day, but he was proud because the project was useful. He wants to join another project next month.</p>
+<div id="read2"></div>
+<button class="action" onclick="gradeReading()">Chấm Reading</button>
+<div id="readScore" class="scorebox" style="display:none"></div>
+</div>
+</section>
+
+<section class="panel" id="writing">
+<div class="card">
+<h2>✍️ Writing – Unit 1</h2>
+<p><b>Topic:</b> Write 70–100 words about your favourite hobby.</p>
+<p><b>Guiding questions:</b> What is your hobby? When did you start it? Who do you share it with? What do you need? How often/where do you do it? Why do you like it? What benefits does it bring?</p>
+<div class="frame"><b>Sentence frame:</b> My favourite hobby is ... I started it ... I usually ... I need ... I like it because ... It helps me ...</div>
+<textarea placeholder="Write your paragraph here..."></textarea>
+<details><summary>👀 Show model paragraph</summary><p>My favourite hobby is reading books. I started this hobby when I was ten years old. I usually read in the evening after I finish my homework. I often read at home, especially at weekends. I need some books and a quiet place. I like reading because it helps me relax and learn new things. It also improves my vocabulary and gives me useful ideas.</p></details>
+</div>
+
+<div class="card">
+<h2>✍️ Writing – Unit 2</h2>
+<p><b>Topic:</b> Write 70–100 words about how to have a healthy lifestyle.</p>
+<p><b>Ideas:</b> healthy food · exercise · sleep · water · hygiene · bad habits to avoid · benefits.</p>
+<div class="frame"><b>Sentence frame:</b> To stay healthy, we should ... We should also ... We shouldn't ... It is important to ...</div>
+<textarea placeholder="Write your paragraph here..."></textarea>
+<details><summary>👀 Show model paragraph</summary><p>To have a healthy lifestyle, we should eat more fruit and vegetables and drink enough water every day. We should exercise regularly and get enough sleep at night. We should also keep our surroundings clean and wash our hands before meals. We shouldn't eat too much fast food or spend too much time on unhealthy habits. These simple things can help us stay fit, active and happy.</p></details>
+</div>
+
+<div class="card">
+<h2>✍️ Writing – Unit 3</h2>
+<p><b>Topic:</b> Write about a community-service activity you joined.</p>
+<p><b>Guiding questions:</b> When and where? Who joined? What did you do? Who did you help? How did you feel? What did you learn?</p>
+<div class="frame"><b>Sentence frame:</b> Last ... I joined ... We ... Then we ... I felt ... because ... I learned that ...</div>
+<textarea placeholder="Write your paragraph here..."></textarea>
+<details><summary>👀 Show model paragraph</summary><p>Last Sunday, I joined a community-service project with my classmates. We cleaned the playground near our school and picked up rubbish. Then we planted some flowers and watered them. We also collected old books for children in a rural area. I felt tired but very happy because our work was useful. I learned that small actions can make our community a better place.</p></details>
+</div>
+
+<div class="card">
+<h2>🗣️ Speaking – Unit 1: My Hobby</h2>
+<p><b>Speak for 1–2 minutes.</b></p>
+<ul><li>What is your hobby?</li><li>When did you start it?</li><li>What do you need?</li><li>How often and where do you do it?</li><li>Why do you like it?</li><li>What benefits does it bring?</li></ul>
+<div class="frame"><b>Speaking frame:</b> My hobby is ... I started ... I usually ... I need ... I enjoy it because ... It helps me ...</div>
+<details><summary>👀 Show model speaking</summary><p>My hobby is gardening. I started it two years ago with my mother. We usually work in our garden at weekends. We grow flowers and some vegetables. I need some seeds, tools and water. I enjoy gardening because it is relaxing and useful. It also helps me learn how plants grow. I feel happy when I see new flowers in our garden.</p></details>
+</div>
+
+<div class="card">
+<h2>🗣️ Speaking – Unit 2: Healthy Habits</h2>
+<div class="frame"><b>Key words:</b> healthy food · exercise · sleep · water · hygiene · avoid fast food</div>
+<p>Talk about what you do to stay healthy and give at least three pieces of advice.</p>
+<details><summary>👀 Show model speaking</summary><p>To stay healthy, I eat fruit and vegetables and drink enough water. I exercise several times a week and try to get enough sleep. I also wash my hands regularly and keep my room clean. I think we should avoid too much fast food and spend more time doing outdoor activities. These habits help me feel active and comfortable.</p></details>
+</div>
+
+<div class="card">
+<h2>🗣️ Speaking – Unit 3: Community Service</h2>
+<div class="frame"><b>Key words:</b> volunteer · clean · pick up rubbish · plant flowers · donate books · help people</div>
+<p>Talk about a community-service activity you joined. Use the Past Simple.</p>
+<details><summary>👀 Show model speaking</summary><p>Last month, I joined a community-service activity at a local playground. My friends and I cleaned the area and picked up rubbish. We also planted flowers and gave some old books to children. I was tired after the activity, but I felt proud because we helped other people. I learned that volunteering is useful and meaningful.</p></details>
+</div>
+</section>
+
+<section class="panel" id="result">
+<div class="card"><h2>🏆 Kết quả</h2><div id="finalResult" class="scorebox">Hãy hoàn thành Practice và Reading để xem tổng kết.</div></div>
+<div class="card"><h3>📌 Tự đánh giá</h3><ul>
+<li>☐ Tôi dùng đúng Present Simple ở Unit 1.</li>
+<li>☐ Tôi dùng đúng should/shouldn't ở Unit 2.</li>
+<li>☐ Tôi dùng đúng Past Simple ở Unit 3.</li>
+<li>☐ Tôi phân biệt được các âm mục tiêu.</li>
+<li>☐ Tôi có thể nói 1–2 phút về mỗi chủ đề.</li>
+<li>☐ Tôi có thể viết một đoạn 70–100 từ.</li>
+</ul></div>
+</section>
+</main>
+<footer>SMART REVIEW · TIẾNG ANH 7 – GLOBAL SUCCESS · UNIT 1–2–3 · ANH VAN 7. Lưu hành nội bộ</footer>
+
+<script>
+const vocab = {
+"hobby":"sở thích","hobbies":"sở thích","collect":"sưu tầm","collecting stamps":"sưu tầm tem",
+"collecting coins":"sưu tầm tiền xu","gardening":"làm vườn","camping":"cắm trại","drawing":"vẽ",
+"painting":"vẽ tranh","reading books":"đọc sách","making models":"làm mô hình","jogging":"chạy bộ",
+"healthy":"khỏe mạnh","health":"sức khỏe","exercise":"tập thể dục","outdoor activity":"hoạt động ngoài trời",
+"acne":"mụn trứng cá","flu":"cúm","sunburn":"cháy nắng","tired eyes":"mỏi mắt","eyedrops":"thuốc nhỏ mắt",
+"lip balm":"son dưỡng môi","mask":"khẩu trang","soap":"xà phòng","suncream":"kem chống nắng",
+"get enough sleep":"ngủ đủ giấc","wash your hands":"rửa tay","avoid crowds":"tránh đám đông",
+"community service":"hoạt động phục vụ cộng đồng","donate":"quyên góp","volunteer":"tình nguyện",
+"exchange":"trao đổi","feed":"cho ăn","look after":"chăm sóc","pick up":"nhặt","plant":"trồng",
+"protect":"bảo vệ","recycle":"tái chế","reuse":"tái sử dụng","set up":"thành lập / thiết lập",
+"tutor":"dạy kèm","nursing home":"nhà dưỡng lão","orphanage":"trại trẻ mồ côi","rural area":"khu vực nông thôn",
+"raise money":"gây quỹ","elderly":"người cao tuổi","homeless":"người vô gia cư","rubbish":"rác"
+};
+let selectedText="", translateTimer=null, lastTranslated="";
+document.addEventListener("selectionchange",()=>{
+  const s=window.getSelection().toString().trim();
+  if(!s) return;
+  selectedText=s;
+  clearTimeout(translateTimer);
+  translateTimer=setTimeout(()=>autoTranslateSelection(s),450);
+});
+function speakText(t){
+  if(!t)return;
+  if(!("speechSynthesis" in window)){alert("Trình duyệt chưa hỗ trợ SpeechSynthesis.");return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang="en-GB";
+  u.rate=.9;
+  u.pitch=1;
+  speechSynthesis.speak(u);
+}
+function speakSelection(){
+  const t=(window.getSelection().toString().trim()||selectedText).replace(/\s+/g," ");
+  if(!t){alert("Hãy bôi đen một từ, cụm từ, câu hoặc đoạn tiếng Anh.");return;}
+  speakText(t);
+}
+function lookupLocal(t){
+  const key=t.toLowerCase().trim();
+  if(vocab[key]) return vocab[key];
+  const keys=Object.keys(vocab).sort((a,b)=>b.length-a.length);
+  for(const k of keys){if(key===k)return vocab[k];}
+  return null;
+}
+async function translateText(t){
+  const local=lookupLocal(t);
+  if(local) return local;
+  // Online fallback: English → Vietnamese. If blocked/offline, the UI keeps a direct Google Translate link.
+  try{
+    const url="https://api.mymemory.translated.net/get?q="+encodeURIComponent(t)+"&langpair=en|vi";
+    const res=await fetch(url,{headers:{"Accept":"application/json"}});
+    if(!res.ok) throw new Error("translation request failed");
+    const data=await res.json();
+    const translated=data?.responseData?.translatedText;
+    if(translated && translated.toLowerCase()!==t.toLowerCase()) return translated;
+  }catch(e){}
+  return null;
+}
+async function showTranslation(t, autoSpeak=false){
+  const box=document.getElementById("qtResult");
+  box.textContent="⏳ Đang dịch sang tiếng Việt…";
+  const result=await translateText(t);
+  if(result){
+    box.innerHTML="🇻🇳 <b>"+htmlEscape(result)+"</b> &nbsp; | &nbsp; 🔊 <button class='action' style='margin:0;padding:6px 10px' onclick='speakText("+JSON.stringify(t)+")'>Nghe English (UK)</button>";
+    if(autoSpeak || document.getElementById("autoSpeak").checked) speakText(t);
+  }else{
+    box.innerHTML='🌐 Không có kết nối dịch trực tuyến. <a target="_blank" rel="noopener" href="https://translate.google.com/?sl=en&tl=vi&text='+encodeURIComponent(t)+'">'+htmlEscape(t)+' → Mở Google Translate</a> &nbsp; | &nbsp; <button class="action" style="margin:0;padding:6px 10px" onclick=\'speakText('+JSON.stringify(t)+')\'>🔊 Audio UK</button>';
+    if(autoSpeak || document.getElementById("autoSpeak").checked) speakText(t);
+  }
+  lastTranslated=t;
+}
+async function autoTranslateSelection(raw){
+  const t=raw.replace(/\s+/g," ").trim();
+  if(!t || t===lastTranslated) return;
+  await showTranslation(t,false);
+}
+function translateSel(type){
+  const t=(window.getSelection().toString().trim()||selectedText).replace(/\s+/g," ").trim();
+  if(!t){alert("Hãy bôi đen một từ, cụm từ, câu hoặc đoạn tiếng Anh.");return;}
+  showTranslation(t,true);
+}
+function htmlEscape(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});});
+
+const qs=[
+["U1","I ___ reading books because it helps me relax.","enjoy","enjoys","enjoying","am enjoy",0],
+["U1","She ___ stamps in her free time.","collect","collecting","collects","is collect",2],
+["U1","He doesn't ___ computer games very often.","plays","playing","play","to play",2],
+["U1","___ your brother like gardening?","Do","Does","Is","Are",1],
+["U1","I ___ go camping with my family at weekends.","usually","am usually","usually am","use",0],
+["U1","My sister ___ painting.","love","loving","loves","is love",2],
+["U1","Which word has the /ɜː/ sound?","about","teacher","bird","ago",2],
+["U1","Which sentence is correct?","She enjoy swimming.","She enjoys swimming.","She enjoying swimming.","She does enjoys swimming.",1],
+["U2","You ___ get enough sleep every night.","should","shouldn't","are","does",0],
+["U2","You ___ eat too much fast food.","should","shouldn't","are","do",1],
+["U2","In 'She drinks water every morning', what is 'water'?","S","V","O","Adv",2],
+["U2","In 'They exercise outdoors', what is 'outdoors'?","S","V","O","Adv",3],
+["U2","Which word begins with /f/?","very","virus","vitamin","flu",3],
+["U2","Which word begins with /v/?","food","five","very","flu",2],
+["U2","Choose the best advice.","You should enough sleep.","You should get enough sleep.","You should getting enough sleep.","You should to get enough sleep.",1],
+["U2","Which is a healthy habit?","Drinking enough water","Eating only fast food","Never exercising","Sleeping very late every night",0],
+["U2","In 'Mai washes her hands before meals', what is 'Mai'?","S","V","O","Adv",0],
+["U2","Which sentence is a simple sentence?","Because I am tired, I sleep.","I exercise every morning.","I exercise and my brother cycles.","When I am free, I read.",1],
+["U3","Last Sunday, we ___ the playground.","clean","cleaned","cleaning","cleans",1],
+["U3","They ___ old books to children.","donate","donated","donating","donates",1],
+["U3","We didn't ___ money.","donated","donate","donating","donates",1],
+["U3","___ you join the project last week?","Do","Does","Did","Were",2],
+["U3","She ___ proud of the project.","was","were","is","be",0],
+["U3","They ___ very helpful.","was","were","did","are",1],
+["U3","Which is the past form of 'give'?","gived","gave","given","giving",1],
+["U3","Which -ed ending is pronounced /ɪd/?","helped","cleaned","needed","washed",2],
+["U3","Which -ed ending is pronounced /t/?","played","visited","helped","needed",2],
+["U3","Which -ed ending is pronounced /d/?","cleaned","washed","needed","helped",0],
+["U3","Choose the correct sentence.","Did you helped them?","Did you help them?","Did you helping them?","Did you helps them?",1]
+];
+
+const quiz=document.getElementById("quiz");
+qs.forEach((q,i)=>{let d=document.createElement("div");d.className="q";d.dataset.answer=q[6];d.innerHTML="<b>"+(i+1)+". "+q[1]+"</b><div class='opts'>"+q.slice(2,6).map((x,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${x}</label>`).join("")+"</div><div class='feedback' id='fb${i}'></div>";quiz.appendChild(d);});
+
+function gradeQuiz(){let score=0;document.querySelectorAll("#quiz .q").forEach((d,i)=>{d.classList.remove("correct","wrong");let c=d.querySelector("input:checked");let fb=document.getElementById("fb"+i);if(!c){d.classList.add("wrong");fb.textContent="Chưa chọn.";return;}if(+c.value===+d.dataset.answer){score++;d.classList.add("correct");fb.textContent="✓ Đúng";}else{d.classList.add("wrong");fb.textContent="✗ Sai";}});let box=document.getElementById("quizScore");box.style.display="block";box.textContent=`Practice: ${score}/${qs.length} câu đúng (${Math.round(score/qs.length*10)}/10).`;window.practiceScore=score;window.practiceTotal=qs.length;updateFinal();}
+function resetQuiz(){document.getElementById("quiz").reset();document.querySelectorAll("#quiz .q").forEach(d=>{d.classList.remove("correct","wrong");d.querySelector(".feedback").textContent=""});document.getElementById("quizScore").style.display="none";window.practiceScore=null;updateFinal();}
+
+const r1=[
+["What is Mai's favourite hobby?","Reading books","Camping","Collecting coins","Drawing",0],
+["When does Mai usually read?","In the morning","In the evening","At lunchtime","At midnight",1],
+["Who likes collecting coins?","Mai","Mai's brother","Mai's sister","Her father",1],
+["Why does Mai think hobbies are useful?","They are expensive.","They help people relax and learn new skills.","They make people tired.","They are difficult.",1]
+];
+const r2=[
+["When did Nam join the project?","Last Saturday","Last Sunday","Last month","Yesterday",0],
+["What did the students clean?","A library","A playground","A classroom","A nursing home",1],
+["What did they plant?","Trees in a forest","Flowers near the library","Rice","Vegetables at home",1],
+["How did Nam feel at the end?","Proud","Angry","Bored","Afraid",0]
+];
+function renderRead(arr,id,prefix){let box=document.getElementById(id);arr.forEach((q,i)=>{box.innerHTML+=`<div class="q" data-read-answer="${q[5]??q[4]}"><b>${i+1}. ${q[0]}</b><div class="opts">${q.slice(1,5).map((x,j)=>`<label><input type="radio" name="${prefix}${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${x}</label>`).join("")}</div><div class="feedback"></div></div>`;});}
+renderRead(r1,"read1","r1");renderRead(r2,"read2","r2");
+function gradeReading(){let score=0,total=8;[...document.querySelectorAll("#read1 .q"),...document.querySelectorAll("#read2 .q")].forEach((d,i)=>{let ans=i<4?r1[i][5]??r1[i][4]:r2[i-4][5]??r2[i-4][4];let c=d.querySelector("input:checked");let fb=d.querySelector(".feedback");d.classList.remove("correct","wrong");if(c&&+c.value===+ans){score++;d.classList.add("correct");fb.textContent="✓ Đúng"}else{d.classList.add("wrong");fb.textContent=c?"✗ Sai":"Chưa chọn."}});let b=document.getElementById("readScore");b.style.display="block";b.textContent=`Reading: ${score}/${total} câu đúng (${Math.round(score/total*10)}/10).`;window.readScore=score;window.readTotal=total;updateFinal();}
+function updateFinal(){let p=window.practiceScore,r=window.readScore;let b=document.getElementById("finalResult");if(p==null&&r==null){b.textContent="Hãy hoàn thành Practice và Reading để xem tổng kết.";return;}let parts=[];if(p!=null)parts.push(`Practice ${p}/${window.practiceTotal}`);if(r!=null)parts.push(`Reading ${r}/${window.readTotal}`);let pct=((p??0)+(r??0))/((p!=null?window.practiceTotal:0)+(r!=null?window.readTotal:0));b.textContent=parts.join(" · ")+" · Điểm tự động phần trắc nghiệm: "+(pct*10).toFixed(1)+"/10";}
+</script>
+</body>
+</html>
